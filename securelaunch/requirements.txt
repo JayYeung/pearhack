@@ -1,0 +1,11 @@
+langgraph
+langchain
+langchain-openai
+GitPython
+python-dotenv
+# Make sure semgrep is installed separately (e.g., pip install semgrep)
+fastmcp
+bandit
+semgrep
+pip-audit
+langchain-anthropic
