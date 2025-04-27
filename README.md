@@ -4,32 +4,34 @@ This project implements a multi-agent system using LangGraph to perform security
 
 ## Features
 
-*   Clones a target GitHub repository.
-*   Runs multiple parallel security analysis tasks:
-    *   **Static Analysis:** Uses Semgrep to identify potential code vulnerabilities.
-    *   **Secret Detection:** Employs Gitleaks and LLM-based analysis to find exposed secrets.
-    *   **Dependency Check:** Uses `pip-audit` (or similar for other languages if extended) to find known vulnerabilities in dependencies.
-    *   **Holistic Code Review:** Uses an LLM to review code for broader security issues.
-*   Synthesizes findings into a comprehensive security report using an LLM.
-*   Exposes the auditing functionality via a FastMCP server endpoint.
+-   Clones a target GitHub repository.
+-   Runs multiple parallel security analysis tasks:
+    -   **Static Analysis:** Uses Semgrep to identify potential code vulnerabilities.
+    -   **Secret Detection:** Employs Gitleaks and LLM-based analysis to find exposed secrets.
+    -   **Dependency Check:** Uses `pip-audit` (or similar for other languages if extended) to find known vulnerabilities in dependencies.
+    -   **Holistic Code Review:** Uses an LLM to review code for broader security issues.
+-   Synthesizes findings into a comprehensive security report using an LLM.
+-   Exposes the auditing functionality via a FastMCP server endpoint.
 
 ## Prerequisites
 
-*   **Python:** Version 3.11 or higher recommended.
-*   **Git:** Required for cloning repositories.
-*   **Semgrep:** Must be installed separately. Follow instructions at [semgrep.dev](https://semgrep.dev/docs/getting-started/).
-*   **Gitleaks:** Must be installed separately. Follow instructions at [github.com/gitleaks/gitleaks](https://github.com/gitleaks/gitleaks#installing).
-*   **Anthropic API Key:** Required for the LLM components.
+-   **Python:** Version 3.11 or higher recommended.
+-   **Git:** Required for cloning repositories.
+-   **Semgrep:** Must be installed separately. Follow instructions at [semgrep.dev](https://semgrep.dev/docs/getting-started/).
+-   **Gitleaks:** Must be installed separately. Follow instructions at [github.com/gitleaks/gitleaks](https://github.com/gitleaks/gitleaks#installing).
+-   **Anthropic API Key:** Required for the LLM components.
 
 ## Setup
 
 1.  **Clone the Repository (if you haven't already):**
+
     ```bash
-    git clone <repository_url>
+    git clone https://github.com/JayYeung/pearhack.git
     cd pearhack # Or your project's root directory
     ```
 
 2.  **Create and Activate a Virtual Environment:**
+
     ```bash
     python3 -m venv venv
     source venv/bin/activate
@@ -38,6 +40,7 @@ This project implements a multi-agent system using LangGraph to perform security
 
 3.  **Install Dependencies:**
     Navigate to the `securelaunch` directory and install the required Python packages:
+
     ```bash
     cd securelaunch
     pip install -r requirements.txt
@@ -45,7 +48,7 @@ This project implements a multi-agent system using LangGraph to perform security
     ```
 
 4.  **Set Up Environment Variables:**
-    Create a `.env` file in the *project root* directory (`/Users/seantai/Desktop/pearhack`) and add your Anthropic API key:
+    Create a `.env` file in the _project root_ directory (`/Users/seantai/Desktop/pearhack`) and add your Anthropic API key:
     ```dotenv
     # .env
     ANTHROPIC_API_KEY="sk-ant-api03-..."
@@ -54,7 +57,7 @@ This project implements a multi-agent system using LangGraph to perform security
 
 ## Running the Server
 
-You must run the server as a Python module from the *project root* directory (`/Users/seantai/Desktop/pearhack`) to ensure imports work correctly:
+You must run the server as a Python module from the _project root_ directory (`/Users/seantai/Desktop/pearhack`) to ensure imports work correctly:
 
 ```bash
 python -m securelaunch.auditor_server
@@ -68,20 +71,22 @@ Once the server is running, you can interact with it using FastMCP tools or the 
 
 1.  **Adding to Claude CLI (Optional):**
     If you use the Claude CLI, you can add this server for easy access (ensure the server is running first):
+
     ```bash
     # Make sure you are in the project root directory
     claude mcp add securelaunch python securelaunch/auditor_server.py
     ```
-    *Note: The exact command might vary based on your FastMCP/Claude CLI setup.*
+
+    _Note: The exact command might vary based on your FastMCP/Claude CLI setup._
 
 2.  **Calling the Auditor:**
     You can trigger an audit via the exposed `audit_repository` tool.
 
-    *   **Example using Claude CLI (if added):**
+    -   **Example using Claude CLI (if added):**
         ```
         /mcp securelaunch:audit_repository github_url="https://github.com/someuser/somerepo"
         ```
-    *   **Example using `curl` (if server running on default port 4001):**
+    -   **Example using `curl` (if server running on default port 4001):**
         ```bash
         curl -X POST http://localhost:4001/call/audit_repository \
              -H "Content-Type: application/json" \
